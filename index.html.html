@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+
+<html class="dark" dir="rtl" lang="he"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "outline-variant": "#5c403d",
+              "secondary": "#c8c6c5",
+              "on-secondary-container": "#b7b5b4",
+              "on-primary-fixed": "#410003",
+              "surface-container-highest": "#353534",
+              "on-secondary": "#313030",
+              "tertiary-fixed-dim": "#e9c400",
+              "on-primary": "#680008",
+              "on-tertiary-container": "#4c3f00",
+              "inverse-surface": "#e5e2e1",
+              "primary-fixed": "#ffdad6",
+              "inverse-primary": "#be0a1a",
+              "on-primary-container": "#5c0006",
+              "tertiary-fixed": "#ffe16d",
+              "outline": "#ac8885",
+              "on-secondary-fixed": "#1c1b1b",
+              "background": "#131313",
+              "on-surface-variant": "#e5bdb9",
+              "on-primary-fixed-variant": "#930010",
+              "secondary-fixed": "#e5e2e1",
+              "on-error": "#690005",
+              "secondary-fixed-dim": "#c8c6c5",
+              "surface-container-high": "#2a2a2a",
+              "surface-tint": "#ffb3ac",
+              "primary": "#ffb3ac",
+              "surface-container-low": "#1c1b1b",
+              "on-secondary-fixed-variant": "#474746",
+              "on-surface": "#e5e2e1",
+              "on-background": "#e5e2e1",
+              "error-container": "#93000a",
+              "on-tertiary-fixed-variant": "#544600",
+              "surface-variant": "#353534",
+              "surface-bright": "#3a3939",
+              "surface-container": "#201f1f",
+              "surface-container-lowest": "#0e0e0e",
+              "on-tertiary": "#3a3000",
+              "primary-fixed-dim": "#ffb3ac",
+              "on-tertiary-fixed": "#221b00",
+              "surface": "#131313",
+              "inverse-on-surface": "#313030",
+              "on-error-container": "#ffdad6",
+              "secondary-container": "#474746",
+              "tertiary": "#e9c400",
+              "error": "#ffb4ab",
+              "tertiary-container": "#c9a900",
+              "surface-dim": "#131313",
+              "primary-container": "#ff544e",
+              "brand-red": "#EF3737",
+              "brand-gold": "#e9c400"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Manrope"],
+              "label": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        background-color: #131313;
+        color: #e5e2e1;
+        font-family: 'Manrope', sans-serif;
+      }
+      .headline-font { font-family: 'Space Grotesk', sans-serif; }
+      .velvet-glow {
+        box-shadow: 0 0 50px -12px rgba(239, 55, 55, 0.3);
+      }
+      .glass-panel {
+        background: rgba(42, 42, 42, 0.4);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(239, 55, 55, 0.2);
+      }
+      .diagonal-pattern {
+        background-image: repeating-linear-gradient(45deg, rgba(239, 55, 55, 0.05) 0, rgba(239, 55, 55, 0.05) 1px, transparent 0, transparent 50%);
+        background-size: 10px 10px;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      #side-drawer {
+        transition: transform 0.3s ease-in-out;
+      }
+      #side-drawer.closed {
+        transform: translateX(100%);
+      }
+      .premium-btn-glow:hover {
+        box-shadow: 0 0 25px rgba(239, 55, 55, 0.5);
+        border-color: rgba(239, 55, 55, 0.8);
+      }
+      .premium-btn-glow-gold:hover {
+        box-shadow: 0 0 25px rgba(233, 196, 0, 0.5);
+        border-color: rgba(233, 196, 0, 0.8);
+      }
+      .shimmer {
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite;
+      }
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+      }
+      .vertical-text {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+      }
+    </style>
+</head>
+<body class="overflow-x-hidden" data-mode="connect">
+<!-- Side Drawer -->
+<div class="fixed inset-0 bg-black/60 z-[60] hidden transition-opacity duration-300" id="drawer-overlay"></div>
+<div class="fixed top-0 right-0 h-full w-80 bg-surface-container-lowest z-[70] closed shadow-2xl p-8 flex flex-col gap-8" id="side-drawer">
+<div class="flex justify-between items-center">
+<span class="text-xl font-bold text-[#EF3737] headline-font">תפריט</span>
+<button class="text-white hover:text-[#EF3737]" onclick="toggleDrawer()">
+<span class="material-symbols-outlined text-3xl">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-2 text-lg headline-font">
+<a class="text-white hover:text-[#EF3737] transition-colors py-3 border-b border-white/10 flex items-center gap-3" href="https://7xlagents.com/registration/?agent=ag1230" target="_blank">
+<span class="material-symbols-outlined text-[#EF3737]">play_circle</span>
+            הצטרפות לטורניר
+        </a>
+<a class="text-white hover:text-[#EF3737] transition-colors py-3 border-b border-white/10 flex items-center gap-3" href="https://wa.me/972553021466" target="_blank">
+<span class="material-symbols-outlined text-[#EF3737]">support_agent</span>
+            תמיכה בשידור חי
+        </a>
+<div class="py-3 border-b border-white/10 space-y-3">
+<span class="text-xs text-gray-500 uppercase tracking-widest font-bold">הורדות</span>
+<div class="flex flex-col gap-3">
+<a class="hover:opacity-80 transition-opacity" href="https://download.good-game-service.com/mobile-page/7xl/en" target="_blank">
+<img alt="Windows Store" class="h-9 md:h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uhfxXJepaB316sKyzHR_PLYt0hhryjcroUqye97dweKGRHgk4pEOUhmZbVEWrQvsSlOFESgX3bB0XHzoJSbmvvLAKTQY56Yl9TvTC8zEolB0dpve7u5Tudao-HRANGT4FfiO2hQMHDEppVGBiyvgJBIBN4zR1JIT_SgirPaOU1M-P_4GqNHxmKFScxO_d87EUnyqJwDOpApFHGVHBHmPeJDvXMe6xqDpnHixWcku0XYGtXOoSGYoy-Zqwhlvgl7WD5RYcalSvSfPw"/>
+</a>
+<a class="hover:opacity-80 transition-opacity" href="https://download.good-game-service.com/mobile-page/7xl/en" target="_blank">
+<img alt="Google Play" class="h-9 md:h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ugcSGzls4dox4TDU0AndJOk-uER6c1OOfhDUIxs99CRgcM5rpI9x0iQmGCvvQ-0oThv4vAod_A71oDTSFKnu5uLpwVMvsPndDKx6f1nZJMH_imzMI_kgAZkXjGyaTU8oHeyW87p7wTYLog1FkT3-YsuPwojf7QLnDWcXj59Hm_L7mfvDalYwL6bSEU2g4xX878VzU7akf9L9GIUH1H3VDzkCaG9hWSE7J3xjGBeSv7x_WGa-RO7SSOXNsqnBT8eIQJe6nzh8iRgHwo"/>
+</a>
+<a class="hover:opacity-80 transition-opacity" href="https://download.good-game-service.com/mobile-page/7xl/en" target="_blank">
+<img alt="App Store" class="h-9 md:h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ujDZ13stqO4k2Lz-etvqRMM0srTX2__uVLRSYA_2UVLkTtD4M1ssQUcAL2nXEut_B2I5NMpdwdksnKywnksdvyIfXrPSsbmWjiSN-LAOzuhbRTF5z-vOU4z8fZbTSlXfBq84opuvOQZDrsoEtq61NIQi5hf06Vd81KqoFdwEuK8Umbjj_C5g4VT8CKNKrxZZqIWweeXj6laf1JuSk_HXE4AB6IDNIXwVGdlHwgwt24UgZDDGEa6XpAw3isfDRfqGWrW2YhW7n72ufs"/>
+</a>
+</div>
+</div>
+<a class="text-white hover:text-[#EF3737] transition-colors py-3 border-b border-white/10 flex items-center gap-3" href="#VIP-Club-Section">
+<span class="material-symbols-outlined text-[#EF3737]">star</span>
+            הטבות VIP
+        </a>
+</div>
+<div class="mt-auto space-y-4">
+<a class="block w-full bg-[#EF3737] text-white py-4 headline-font font-bold text-center" href="https://7xlagents.com/registration/?agent=ag1230" target="_blank">הרשמה עכשיו</a>
+<button class="w-full border border-white/20 text-white py-4 headline-font font-bold">התחברות</button>
+</div>
+</div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 z-50 w-full bg-[#131313] px-4 md:px-6 py-4 flex justify-between items-center shadow-[0_4px_30px_rgba(239,55,55,0.1)] transition-colors duration-300">
+<div class="flex items-center gap-2 md:gap-4">
+<button class="text-white flex items-center hover:text-[#EF3737] transition-colors" onclick="toggleDrawer()">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+<a class="text-xl md:text-2xl font-bold tracking-tighter text-[#EF3737] headline-font whitespace-nowrap" href="#">7XL Premium</a>
+<div class="hidden lg:flex gap-6 items-center mr-8">
+<a class="text-[#EF3737] border-b-2 border-[#EF3737] pb-1 headline-font font-medium tracking-tight text-sm" href="#">פוקר אונליין</a>
+<a class="text-gray-400 hover:text-white transition-colors headline-font font-medium tracking-tight text-sm" href="#">אודות</a>
+<a class="text-gray-400 hover:text-white transition-colors headline-font font-medium tracking-tight text-sm" href="#VIP-Club-Section">מועדון VIP</a>
+</div>
+</div>
+<div class="flex items-center gap-2 md:gap-4">
+<a class="bg-[#25D366]/20 border border-[#25D366]/50 text-[#25D366] px-3 md:px-4 py-2 headline-font font-bold text-xs md:text-sm hover:bg-[#25D366]/30 transition-all flex items-center gap-1 md:gap-2" href="https://wa.me/972553021466" target="_blank">
+<span class="material-symbols-outlined text-sm md:text-base">chat</span>
+<span class="hidden sm:inline">מעבר לנציג</span>
+<span class="sm:hidden">וואטסאפ</span>
+</a>
+<a class="bg-[#EF3737] text-white px-4 md:px-6 py-2 headline-font font-bold tracking-tight text-sm md:text-base hover:bg-[#EF3737]/90 transition-all active:scale-95" href="https://7xlagents.com/registration/?agent=ag1230" target="_blank">הרשמה</a>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center pt-20 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-l from-background via-background/60 md:via-background/40 to-transparent z-10"></div>
+<img alt="High stakes professional poker tournament cinematic shot" class="w-full h-full object-cover scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB_hAc3p3rHoJyCTdXrKcJo15fPCH7o3z-eo9R0zIpCXSfj4GHhXqQjPZqc26c9o2x2Mo2rQ_irZJTPGHSRdwP54l6f66lipTRQKy1sTpLgCguXTZASH4hfgI7uofOVN-V6682j9oz43r9HP4LYwv8ADXvcBNZnpVIZalSkk7mdKdXD28YOYY5SmYbkZWRZj_cXbfv8qHURSP0LH3QOubC7oVxiLs_2h6zODdq-uztgXcJuF7G6HSWYSgfzWcQaIhbaJaSNjtbi-KO"/>
+</div>
+<div class="container mx-auto px-6 relative z-20">
+<div class="max-w-3xl space-y-6 md:space-y-8 text-right lg:text-right">
+<h1 class="text-5xl md:text-8xl font-bold headline-font leading-tight tracking-tighter">
+<span class="block text-white">7XL PREMIUM</span>
+<span class="text-[#EF3737] block">ULTIMATE POKER</span>
+</h1>
+<p class="text-lg md:text-xl text-secondary max-w-xl font-light leading-relaxed mr-0 ml-auto">
+                ברוכים הבאים למקדש הפוקר האקסקלוסיבי ביותר. חווית משחק ללא פשרות, מהירות שיא ואבטחה מקסימלית בסטנדרטים הגבוהים בעולם.
+            </p>
+<div class="flex flex-col items-end gap-6 pt-4">
+<div class="flex flex-wrap items-center justify-end gap-4 md:gap-6 w-full">
+<a class="bg-[#EF3737] text-white px-8 md:px-10 py-4 headline-font font-bold text-base md:text-lg hover:scale-105 transition-transform premium-btn-glow w-full sm:w-auto text-center order-2 sm:order-1" href="https://7xlagents.com/registration/?agent=ag1230" target="_blank">הצטרפו עכשיו</a>
+<a class="border border-white/20 text-white px-8 md:px-10 py-4 headline-font font-bold text-base md:text-lg hover:bg-white/5 transition-colors w-full sm:w-auto text-center order-1 sm:order-2" href="#VIP-Club-Section">מידע נוסף</a>
+</div>
+<!-- Download Icons moved here, right aligned below the "More Info" button -->
+<div class="flex items-center justify-end gap-3 md:gap-4 w-full">
+<a class="hover:opacity-80 transition-opacity" href="https://download.good-game-service.com/mobile-page/7xl/en" target="_blank">
+<img alt="App Store" class="h-9 md:h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ujDZ13stqO4k2Lz-etvqRMM0srTX2__uVLRSYA_2UVLkTtD4M1ssQUcAL2nXEut_B2I5NMpdwdksnKywnksdvyIfXrPSsbmWjiSN-LAOzuhbRTF5z-vOU4z8fZbTSlXfBq84opuvOQZDrsoEtq61NIQi5hf06Vd81KqoFdwEuK8Umbjj_C5g4VT8CKNKrxZZqIWweeXj6laf1JuSk_HXE4AB6IDNIXwVGdlHwgwt24UgZDDGEa6XpAw3isfDRfqGWrW2YhW7n72ufs"/>
+</a>
+<a class="hover:opacity-80 transition-opacity" href="https://download.good-game-service.com/mobile-page/7xl/en" target="_blank">
+<img alt="Google Play" class="h-9 md:h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ugcSGzls4dox4TDU0AndJOk-uER6c1OOfhDUIxs99CRgcM5rpI9x0iQmGCvvQ-0oThv4vAod_A71oDTSFKnu5uLpwVMvsPndDKx6f1nZJMH_imzMI_kgAZkXjGyaTU8oHeyW87p7wTYLog1FkT3-YsuPwojf7QLnDWcXj59Hm_L7mfvDalYwL6bSEU2g4xX878VzU7akf9L9GIUH1H3VDzkCaG9hWSE7J3xjGBeSv7x_WGa-RO7SSOXNsqnBT8eIQJe6nzh8iRgHwo"/>
+</a>
+<a class="hover:opacity-80 transition-opacity" href="https://download.good-game-service.com/mobile-page/7xl/en" target="_blank">
+<img alt="Windows Store" class="h-9 md:h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uhfxXJepaB316sKyzHR_PLYt0hhryjcroUqye97dweKGRHgk4pEOUhmZbVEWrQvsSlOFESgX3bB0XHzoJSbmvvLAKTQY56Yl9TvTC8zEolB0dpve7u5Tudao-HRANGT4FfiO2hQMHDEppVGBiyvgJBIBN4zR1JIT_SgirPaOU1M-P_4GqNHxmKFScxO_d87EUnyqJwDOpApFHGVHBHmPeJDvXMe6xqDpnHixWcku0XYGtXOoSGYoy-Zqwhlvgl7WD5RYcalSvSfPw"/>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-24 bg-surface-container-lowest relative overflow-hidden">
+<div class="container mx-auto px-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-surface p-8 md:p-10 relative overflow-hidden group border border-white/5">
+<div class="absolute top-0 right-0 w-32 h-32 bg-[#EF3737]/5 -mr-16 -mt-16 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<span class="material-symbols-outlined text-[#EF3737] text-5xl mb-6 block">bolt</span>
+<h3 class="text-2xl font-bold headline-font mb-4">Maximum Speed</h3>
+<p class="text-secondary leading-relaxed">טכנולוגיית הזרמת נתונים מתקדמת המבטיחה משחק חלק ללא השהיות, גם בעומסים גבוהים ביותר.</p>
+</div>
+<div class="bg-surface p-8 md:p-10 relative overflow-hidden group border border-white/5">
+<div class="absolute top-0 right-0 w-32 h-32 bg-[#EF3737]/5 -mr-16 -mt-16 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<span class="material-symbols-outlined text-[#EF3737] text-5xl mb-6 block">shield</span>
+<h3 class="text-2xl font-bold headline-font mb-4">Uncompromising Security</h3>
+<p class="text-secondary leading-relaxed">הצפנה ברמה צבאית ומערכות ניטור מתקדמות השומרות על הכסף והמידע שלך בטוחים 24/7.</p>
+</div>
+<div class="bg-surface p-8 md:p-10 relative overflow-hidden group border border-white/5">
+<div class="absolute top-0 right-0 w-32 h-32 bg-[#EF3737]/5 -mr-16 -mt-16 rounded-full group-hover:scale-150 transition-transform duration-500"></div>
+<span class="material-symbols-outlined text-[#EF3737] text-5xl mb-6 block">support_agent</span>
+<h3 class="text-2xl font-bold headline-font mb-4">Support 24/7</h3>
+<p class="text-secondary leading-relaxed">צוות מומחים זמין עבורך מסביב לשעון לכל שאלה, תקלה או בקשה, בכל שעה ביום.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Games Selection -->
+<section class="py-24 bg-background">
+<div class="container mx-auto px-6">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+<div class="w-full md:w-auto">
+<span class="text-[#EF3737] headline-font tracking-[0.3em] uppercase text-sm font-bold block text-right">The Lobby</span>
+<h2 class="text-4xl md:text-5xl font-bold headline-font mt-2 tracking-tighter text-white text-right">OUR GAMES</h2>
+</div>
+<div class="h-[2px] flex-grow mx-12 bg-surface-container-high hidden md:block"></div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="group relative aspect-[3/4] overflow-hidden bg-surface-container-low">
+<img alt="Professional poker tournament layout" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9TIuKO33otf6IwCjdEckp0kL-qKe13TwmjP1TUR80uD8vDf2eFxzjKP2msxbSugGqpBGm_yY8IhOAApinwXX4WgJUf2vIxMnHTSMOuEvFjpV1NE6hOWGI82X7pHPjNoYcJ01B3k3i9zgrveaYJMzCqfahI3bpBYlt1kfwYtB1vsPKXgT7mZRl6CLBeA3u0LBI7Z3XRJO_dAiUqioqU1SrynbgDPbyD3PsWQBqOtACotJTggvnq2lXNmtgzu1KUdyx2MHSDlc-1ODI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 p-8 w-full">
+<h4 class="text-2xl font-bold headline-font mb-2 text-white">Tournaments</h4>
+<p class="text-sm text-secondary opacity-0 group-hover:opacity-100 transition-opacity">טורנירים יומיים עם פרסים מובטחים</p>
+</div>
+</div>
+<div class="group relative aspect-[3/4] overflow-hidden bg-surface-container-low">
+<img alt="Fast paced card dealing action" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6i8GmDuau_7R7y52O81moLf_TOXQFFkKw0saceUN2N0r3EQOTABAfllXq6n3dgCryATsomWOI3YG4o7BWJcj90uBqPolt_awmdei39EFPQhRRfrE-__fSwIAN7wxUiLEpqC0oBSJilgU7m89jTZDVC0J1SGay8J5jjruiw2pb1X32bKiqziESGfy8ufjb7mlThWYRT6F9pnRTNomW8fI7_jjccrWoGcQxSlwUKXQVFTvxrQuUxlBQZv58cCbxfI9gOXbFQFm85fof"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 p-8 w-full">
+<h4 class="text-2xl font-bold headline-font mb-2 text-white">Rush &amp; Cash</h4>
+<p class="text-sm text-secondary opacity-0 group-hover:opacity-100 transition-opacity">הפוקר המהיר בעולם - אקשן ללא הפסקה</p>
+</div>
+</div>
+<div class="group relative aspect-[3/4] overflow-hidden bg-surface-container-low">
+<img alt="Card deck spread on table" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChQy8-pLIx2sRS-8CLkxG-2VtNP4Gfur8GjGbDDF4sqmAA4WZ4ERAIzZ8qO_krGsHeVWrS0IAD0RxDa2iK3uisz-sQNmVwa14tgYMp4Y3tCwrKW1VF5gM22Bk0-ilkWRFXKkDDZHjBUJ3ohmuvoHZewSEj1DvvaBanof1CFLMOO-W4nqZwe3OBRLnckANIgK8hwrNKeW_7opOoV4jWSM9zR2dXFKbb9cyJ1n94dwGS3QmSQ_mQyaxl-8YenGxR8YAAI8GuMCe40uZx"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 p-8 w-full">
+<h4 class="text-2xl font-bold headline-font mb-2 text-white">Omaha High</h4>
+<p class="text-sm text-secondary opacity-0 group-hover:opacity-100 transition-opacity">לחובבי האסטרטגיה המורכבת</p>
+</div>
+</div>
+<div class="group relative aspect-[3/4] overflow-hidden bg-surface-container-low">
+<img alt="Classic Texas Holdem game elements" class="w-full h-full object-cover opacity-60 group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBYpb4fvLTdhkHrP7rdgUwwp_zeXW_ex4843FNSoHE9m43AhWErXk3fk4U7AoPTTIxx28WClvJn30xs6REufSuvuYgEFO3S3RrbPHgJNeKicmesdrFyGPFLVEEJLxhVY63T7GiXbyP4SzvLUb2jsyZ9JQpjqBsj9sTyaN6xSEh4am8i0umj9QEfYgNk13JoTHyNKptgyloo5BzEpz961J1GGabDhM9UxczlF6p4MuiculYGgoqccE42ePy99S2DPl_NmHySdhQQ7on"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-0 p-8 w-full">
+<h4 class="text-2xl font-bold headline-font mb-2 text-white">Texas Hold'em</h4>
+<p class="text-sm text-secondary opacity-0 group-hover:opacity-100 transition-opacity">הקלאסיקה הנצחית בשולחנות High Stakes</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- VIP Club Section -->
+<section class="py-24 md:py-32 bg-[#0e0e0e] relative overflow-hidden" id="VIP-Club-Section">
+<div class="absolute inset-0 diagonal-pattern opacity-10"></div>
+<div class="container mx-auto px-6 relative z-10">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+<div class="order-2 lg:order-1">
+<div class="relative group">
+<div class="absolute -inset-1 bg-gradient-to-r from-[#e9c400] to-transparent opacity-30 blur-2xl group-hover:opacity-50 transition-opacity"></div>
+<img alt="Premium gold metallic card with VIP branding" class="relative z-10 w-full shadow-2xl transform hover:scale-105 transition-transform duration-500 border border-brand-gold/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRVqQW142Hx447ldkSUoh8-T0TvlRplECq3LQptlfxvEKih4E2Hvq2mlP0b7ZPad3kRuCjoAHF0KV_s4yNDV-Qu_JycZCGLRv-uMls2pbvGgscM8b1Cn-BhzxZpZvoUyiCZspZhuOm8dqj5eDQZFDIE8IfqYdF7r_KnPvb8x8gKeogfc4-MKvDNS-c4STB6F0O2uvLfQyfXj62MTEbhlXfeLfzxLLDolRffmD-R5_XDcuAnK5xnsPuJrDuSzl2xCY_TVn8KQfHPFXu"/>
+</div>
+</div>
+<div class="order-1 lg:order-2 space-y-6 md:space-y-8 text-right">
+<span class="text-[#e9c400] headline-font tracking-[0.3em] uppercase text-sm font-bold block">Exclusive Membership</span>
+<h2 class="text-5xl md:text-6xl font-bold headline-font tracking-tighter text-white uppercase">VIP CLUB</h2>
+<p class="text-lg md:text-xl text-secondary leading-relaxed font-light">
+                    הצטרפו למועדון היוקרה של 7XL Premium ותיהנו מהטבות ששמורות רק למקצוענים. אנחנו מעריכים נאמנות ומתגמלים אותה ביד רחבה.
+                </p>
+<ul class="space-y-4 inline-block">
+<li class="flex items-center justify-end gap-4 text-lg text-white">
+<span>מנהל חשבון אישי זמין 24/7</span>
+<span class="material-symbols-outlined text-[#e9c400]">verified</span>
+</li>
+<li class="flex items-center justify-end gap-4 text-lg text-white">
+<span>החזרי Rakeback גבוהים במיוחד</span>
+<span class="material-symbols-outlined text-[#e9c400]">payments</span>
+</li>
+</ul>
+<div class="pt-4">
+<a class="inline-block w-full md:w-auto bg-gradient-to-r from-[#e9c400] to-[#c9a900] text-[#4c3f00] px-10 py-4 headline-font font-extrabold text-lg shadow-xl hover:brightness-110 transition-all text-center" href="https://wa.me/972553021466" target="_blank">
+                        להצטרפות למועדון ה-VIP
+                    </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials Section -->
+<section class="py-24 bg-background">
+<div class="container mx-auto px-6">
+<div class="text-center mb-16">
+<h2 class="text-3xl md:text-4xl font-bold headline-font mb-4 text-white uppercase tracking-tighter">What Our Players Say</h2>
+<div class="h-1 w-24 bg-[#EF3737] mx-auto"></div>
+</div>
+<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+<div class="bg-surface-container p-8 border-r-4 border-[#EF3737] text-right">
+<div class="flex justify-end text-[#EF3737] mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-lg italic mb-6 text-white">"הטורנירים ב-7XL Premium הם ברמה הכי גבוהה שיש. מרגישים שהשחקנים כאן הם באמת VIP."</p>
+<span class="block font-bold headline-font text-white">— אביב ש.</span>
+</div>
+<div class="bg-surface-container p-8 border-r-4 border-[#EF3737] text-right">
+<div class="flex justify-end text-[#EF3737] mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-lg italic mb-6 text-white">"חווית משחק מטורפת. האפליקציה בטלפון עובדת חלק לגמרי, ממליץ בחום לכל מי שאוהב פוקר."</p>
+<span class="block font-bold headline-font text-white">— עידן מ.</span>
+</div>
+<div class="bg-surface-container p-8 border-r-4 border-[#EF3737] text-right">
+<div class="flex justify-end text-[#EF3737] mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-lg italic mb-6 text-white">"הפלטפורמה הכי אמינה שיצא לי לשחק בה. משיכות מהירות ושירות פשוט מצוין."</p>
+<span class="block font-bold headline-font text-white">— רועי כ.</span>
+</div>
+<div class="bg-surface-container p-8 border-r-4 border-[#EF3737] text-right">
+<div class="flex justify-end text-[#EF3737] mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-lg italic mb-6 text-white">"שירות הלקוחות בוואטסאפ זמין תמיד לכל שאלה, תענוג לשחק בראש שקט."</p>
+<span class="block font-bold headline-font text-white">— נתי ב.</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Registration Section -->
+<section class="py-24 bg-surface-container-lowest relative overflow-hidden">
+<div class="absolute inset-0 diagonal-pattern opacity-5"></div>
+<div class="container mx-auto px-6 relative z-10 flex flex-col items-center">
+<div class="w-full max-w-4xl bg-surface p-6 md:p-12 border border-[#EF3737]/30 velvet-glow">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+<div class="space-y-6 text-right">
+<h2 class="text-3xl md:text-4xl font-bold headline-font text-white flex items-center justify-end gap-3">
+<span>פתיחת חשבון חדש</span>
+<span class="material-symbols-outlined text-[#EF3737] text-4xl">person_add</span>
+</h2>
+<p class="text-secondary text-lg leading-relaxed">
+                        הירשמו עכשיו דרך מערכת הסוכנים של 7XL Premium ותהנו מחבילת הטבות VIP בלעדית, מענה מהיר ומשיכות ללא עמלות.
+                    </p>
+<div class="space-y-4">
+<div class="flex items-center justify-end gap-3 text-white">
+<span>החזרי Rakeback מקסימליים</span>
+<span class="material-symbols-outlined text-[#EF3737] text-sm">check_circle</span>
+</div>
+<div class="flex items-center justify-end gap-3 text-white">
+<span>תמיכה בנציג אישי 24/7</span>
+<span class="material-symbols-outlined text-[#EF3737] text-sm">check_circle</span>
+</div>
+</div>
+</div>
+<div class="space-y-6 bg-black/40 p-6 md:p-8 border border-white/10">
+<div class="relative">
+<label class="text-xs text-gray-500 uppercase tracking-widest block mb-2 text-right">Referral Code / קוד סוכן</label>
+<div class="flex">
+<input class="w-full bg-black/60 border border-[#EF3737]/40 text-[#EF3737] px-4 py-4 headline-font font-bold text-2xl tracking-widest focus:ring-0 focus:outline-none text-center" readonly="" type="text" value="ag1230"/>
+<div class="bg-[#EF3737] text-white px-4 flex items-center font-bold text-[10px] uppercase shimmer vertical-text">VIP</div>
+</div>
+<p class="text-xs text-gray-400 mt-3 text-right italic">הקוד יוחל אוטומטית בקישור ההרשמה למטה</p>
+</div>
+<a class="block w-full bg-[#EF3737] text-white py-5 headline-font font-extrabold text-xl hover:scale-[1.02] transition-transform text-center shadow-lg hover:shadow-[#EF3737]/40" href="https://7xlagents.com/registration/?agent=ag1230" target="_blank">
+                        מעבר לטופס הרשמה
+                    </a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section class="py-24 bg-background">
+<div class="container mx-auto px-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-px bg-surface-container-high border border-surface-container-high">
+<div class="bg-surface p-8 md:p-12 flex flex-col items-center text-center space-y-6">
+<span class="material-symbols-outlined text-[#EF3737] text-6xl">call</span>
+<h3 class="text-2xl md:text-3xl font-bold headline-font text-white">Support Line 1</h3>
+<a class="text-3xl md:text-4xl font-extrabold headline-font hover:text-[#EF3737] transition-colors bg-[#EF3737]/10 px-8 py-4 border-b-4 border-[#EF3737] block w-full text-white" href="https://wa.me/972553021464" target="_blank">055-302-1464</a>
+<p class="text-secondary">זמינות מלאה למענה טלפוני מהיר</p>
+</div>
+<div class="bg-surface p-8 md:p-12 flex flex-col items-center text-center space-y-6">
+<span class="material-symbols-outlined text-[#EF3737] text-6xl">call</span>
+<h3 class="text-2xl md:text-3xl font-bold headline-font text-white">Support Line 2</h3>
+<a class="text-3xl md:text-4xl font-extrabold headline-font hover:text-[#EF3737] transition-colors bg-[#EF3737]/10 px-8 py-4 border-b-4 border-[#EF3737] block w-full text-white" href="https://wa.me/972553021464" target="_blank">055-302-1466</a>
+<p class="text-secondary">מוקד תמיכה משלים לכל פנייה</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-[#0e0e0e] w-full px-6 py-16 flex flex-col gap-12 border-t border-white/5">
+<div class="flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex gap-4 items-center">
+<a class="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 hover:border-[#EF3737]/50 hover:bg-[#EF3737]/10 transition-all rounded-none group w-10 h-10 md:w-12 md:h-12 flex items-center justify-center" href="https://www.facebook.com/share/1CBNbdn1PP/?mibextid=wwXIfr" target="_blank">
+<img alt="Facebook" class="h-7 md:h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uieutAA58rnkDx9Yf62UqUKAAjW9dFAeVal1u7Lp_ltF_5PXH9Q093jztXImftqml-X-W0zny3O_mOKRhuHmrsGzIxyJNEkr56W1LoOsYjAqME2MrtDreuPcD3ZGbsVqeTy7b7To9uSKP0QRhgoGM7D2zteYZsl4O_HyZtWD4NZ4ztDrFrstHF6PbwQ0jXZdnHyQl7FHRRG0MB6iysaCr0K0_zZFEhHnhXkvoHBW3ecLgZRf8tFs-AnTw7wFG_9Q5sJJAWdFKGpxw"/>
+</a>
+<a class="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 hover:border-[#EF3737]/50 hover:bg-[#EF3737]/10 transition-all rounded-none group w-10 h-10 md:w-12 md:h-12 flex items-center justify-center" href="https://www.instagram.com/7xl_premium?igsh=MTM0MHo0OXU5dDBuZw%3D%3D&amp;utm_source=qr" target="_blank">
+<img alt="Instagram" class="h-7 md:h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uhliz0ZDt2HwkZU1AzHqoFAUII5qpkmPHWB_mQo9KSqrcP-qHL1Ca2T6ljy_yt92dWX-yrc-Cp3mmRHhGVrfPsSvMAMv-hzXJhYZvH7UvyYqt62pIk2dg2y65vKXIw_pgtXyPu-pc93yEiu_shSFfnpmYy5t0MV84EETGqAxXXPuzXgh3QeLrK1omBtwBT811CrnSVkzPq_w-1yejOpt9A96-eKe96p5bPmI-DNjDjPobgW8df_s1oxLDRwYmn_E1kuIdsx1zPj-_c"/>
+</a>
+<!-- Added X (Twitter) Logo -->
+<a class="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 hover:border-[#EF3737]/50 hover:bg-[#EF3737]/10 transition-all rounded-none group w-10 h-10 md:w-12 md:h-12 flex items-center justify-center" href="#" target="_blank">
+<img alt="X (Twitter)" class="h-7 md:h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ui9QepRxeW7698jt95AXfAD0SbcJ_rM3mWJbz9PLGsl_GjHR9RxWgpa4D-E0-lOmTnuIIrh-_IBqVcbzsqJZ4lHSHpYufTaoZiwYrLS8nHrM6m6KM_c7YbTOsnn7zVYA05s2Df-HLHE1H_Xt40mJ7x-WDsx2r5D_aP6RAXgSzolc0-GRD5D6Uv_V-MkGOy9YCdPU8ZEvjRFK4JkjhHpS3bzAJYlpuXH4RgQeF1ZSl36wDyqJmudFZ3X2gshhnihaIDoJD8bF1cQZcY"/>
+</a>
+<a class="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 hover:border-[#EF3737]/50 hover:bg-[#EF3737]/10 transition-all rounded-none group w-10 h-10 md:w-12 md:h-12 flex items-center justify-center" href="https://wa.me/972553021466" target="_blank">
+<img alt="WhatsApp" class="h-7 md:h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ujPgedJzHi2iKZOgDxvmPDNPD7vtn4VNuo6ek1fWcX75Cc_MSEBJdvcoHc5k3MmLNyLaqe9DVWIzCK9rLHP9JaWa4JpNvc421lDMK-JYR8eO5-8g80Y8paWtcrRpUTip4TvrhhmwoXLQbM7RX2slL7gdH6I2cg45xSPcGAUbV4-8ObLW0jYf6nuD6X6t_4e7ChEnbuDPBcds7TscihrSlw9eWdeBrnOBiE5YsAfU93ZgR9Zjfdsu4qW7VqejgOwx7zoCoU_ovOzkzk"/>
+</a>
+<a class="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 hover:border-[#EF3737]/50 hover:bg-[#EF3737]/10 transition-all rounded-none group w-10 h-10 md:w-12 md:h-12 flex items-center justify-center" href="https://t.me/+m1PR6CQ2AqZiOWJk" target="_blank">
+<img alt="Telegram" class="h-7 md:h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ug4mB8EzMajK0-quf0FXSjMC62JISrEAXEoKlCyU4OzXetvOQEDmD0RN53N3RkKuiXIgMApVScWReyeQmOF6Rvkx-gRQDQb2NhCzvK2AgMOaUvoDwlv2iOvOK_a-iIGeG4NBVV5eDF7KAUKgbKEwYjoZw4Odd1Rce2DexBXPHHgZP2TLR6-pmKAMZ791yrDDXVgUww8JoA2r6d7wp836KLBZxqi_Srl39-Do8US2qMkL6oL5T-Z6_IpF10LuHaGEyzrgwmwJYkhrLw"/>
+</a>
+</div>
+<div class="flex flex-wrap justify-center gap-6 md:gap-8">
+<a class="text-gray-500 hover:text-[#EF3737] transition-colors headline-font uppercase tracking-widest text-[10px] md:text-xs" href="#">תקנון</a>
+<a class="text-gray-500 hover:text-[#EF3737] transition-colors headline-font uppercase tracking-widest text-[10px] md:text-xs" href="#">פרטיות</a>
+<a class="text-gray-500 hover:text-[#EF3737] transition-colors headline-font uppercase tracking-widest text-[10px] md:text-xs" href="#">משחק אחראי</a>
+<a class="text-gray-500 hover:text-[#EF3737] transition-colors headline-font uppercase tracking-widest text-[10px] md:text-xs" href="#">תמיכה</a>
+</div>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-12 border-t border-white/5">
+<p class="text-gray-600 text-[10px] md:text-xs font-body text-center md:text-right">© 2024 7XL Premium. All rights reserved. High Stakes Sanctuary.</p>
+<div class="flex gap-4">
+<a class="hover:opacity-80 transition-opacity" href="https://download.good-game-service.com/mobile-page/7xl/en" target="_blank">
+<img alt="Windows" class="h-7 md:h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uhfxXJepaB316sKyzHR_PLYt0hhryjcroUqye97dweKGRHgk4pEOUhmZbVEWrQvsSlOFESgX3bB0XHzoJSbmvvLAKTQY56Yl9TvTC8zEolB0dpve7u5Tudao-HRANGT4FfiO2hQMHDEppVGBiyvgJBIBN4zR1JIT_SgirPaOU1M-P_4GqNHxmKFScxO_d87EUnyqJwDOpApFHGVHBHmPeJDvXMe6xqDpnHixWcku0XYGtXOoSGYoy-Zqwhlvgl7WD5RYcalSvSfPw"/>
+</a>
+<a class="hover:opacity-80 transition-opacity" href="https://download.good-game-service.com/mobile-page/7xl/en" target="_blank">
+<img alt="Android" class="h-7 md:h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ugcSGzls4dox4TDU0AndJOk-uER6c1OOfhDUIxs99CRgcM5rpI9x0iQmGCvvQ-0oThv4vAod_A71oDTSFKnu5uLpwVMvsPndDKx6f1nZJMH_imzMI_kgAZkXjGyaTU8oHeyW87p7wTYLog1FkT3-YsuPwojf7QLnDWcXj59Hm_L7mfvDalYwL6bSEU2g4xX878VzU7akf9L9GIUH1H3VDzkCaG9hWSE7J3xjGBeSv7x_WGa-RO7SSOXNsqnBT8eIQJe6nzh8iRgHwo"/>
+</a>
+<a class="hover:opacity-80 transition-opacity" href="https://download.good-game-service.com/mobile-page/7xl/en" target="_blank">
+<img alt="iPhone" class="h-7 md:h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0ujDZ13stqO4k2Lz-etvqRMM0srTX2__uVLRSYA_2UVLkTtD4M1ssQUcAL2nXEut_B2I5NMpdwdksnKywnksdvyIfXrPSsbmWjiSN-LAOzuhbRTF5z-vOU4z8fZbTSlXfBq84opuvOQZDrsoEtq61NIQi5hf06Vd81KqoFdwEuK8Umbjj_C5g4VT8CKNKrxZZqIWweeXj6laf1JuSk_HXE4AB6IDNIXwVGdlHwgwt24UgZDDGEa6XpAw3isfDRfqGWrW2YhW7n72ufs"/>
+</a>
+</div>
+</div>
+</footer>
+<script>
+    function toggleDrawer() {
+        const drawer = document.getElementById('side-drawer');
+        const overlay = document.getElementById('drawer-overlay');
+        if (drawer.classList.contains('closed')) {
+            drawer.classList.remove('closed');
+            overlay.classList.remove('hidden');
+            overlay.style.display = 'block';
+            setTimeout(() => { overlay.classList.add('opacity-100'); }, 10);
+            document.body.style.overflow = 'hidden';
+        } else {
+            drawer.classList.add('closed');
+            overlay.classList.remove('opacity-100');
+            setTimeout(() => {
+                overlay.classList.add('hidden');
+                overlay.style.display = 'none';
+            }, 300);
+            document.body.style.overflow = '';
+        }
+    }
+    document.getElementById('drawer-overlay').addEventListener('click', toggleDrawer);
+</script>
+</body></html>
